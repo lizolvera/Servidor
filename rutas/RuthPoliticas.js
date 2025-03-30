@@ -5,28 +5,25 @@ const router = express.Router();
 
 // Agregar una nueva política
 router.post('/agregar', async (req, res) => {
-    console.log("Datos recibidos:", req.body); // Agrega este log
-    try {
-      const { politicaDeUso, politicaDePrivacidad, terminosYCondiciones } = req.body;
-      const nuevaPolitica = new Politica({
-        politicaDeUso,
-        politicaDePrivacidad,
-        terminosYCondiciones
-      });
-      await nuevaPolitica.save();
-      res.status(201).json({ mensaje: 'Política agregada exitosamente', politica: nuevaPolitica });
-    } catch (error) {
-      console.error("Error al agregar la política:", error); // Agrega este log
-      res.status(500).json({ mensaje: 'Error al agregar la política', error });
-    }
-  });
-  
+  try {
+    const { politicaDeUso, politicaDePrivacidad, terminosYCondiciones } = req.body;
+    const nuevaPolitica = new Politica({
+      politicaDeUso,
+      politicaDePrivacidad,
+      terminosYCondiciones
+    });
+    await nuevaPolitica.save();
+    res.status(201).json({ mensaje: 'Política agregada exitosamente', politica: nuevaPolitica });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al agregar la política', error });
+  }
+});
 
-// Obtener las políticas
+// Obtener todas las políticas
 router.get('/ver', async (req, res) => {
   try {
-    const politicas = await Politica.findOne();
-    if (!politicas) {
+    const politicas = await Politica.find();
+    if (!politicas.length) {
       return res.status(404).json({ mensaje: 'No hay políticas registradas' });
     }
     res.json(politicas);
@@ -35,7 +32,7 @@ router.get('/ver', async (req, res) => {
   }
 });
 
-// Actualizar las políticas
+// Actualizar una política específica
 router.put('/actualizar/:id', async (req, res) => {
   try {
     const { politicaDeUso, politicaDePrivacidad, terminosYCondiciones } = req.body;
@@ -44,19 +41,19 @@ router.put('/actualizar/:id', async (req, res) => {
       { politicaDeUso, politicaDePrivacidad, terminosYCondiciones },
       { new: true }
     );
-    res.json({ mensaje: 'Políticas actualizadas exitosamente', politicas: politicasActualizadas });
+    res.json({ mensaje: 'Política actualizada exitosamente', politicas: politicasActualizadas });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al actualizar las políticas', error });
+    res.status(500).json({ mensaje: 'Error al actualizar la política', error });
   }
 });
 
-// Eliminar las políticas
+// Eliminar una política específica
 router.delete('/eliminar/:id', async (req, res) => {
   try {
     await Politica.findByIdAndDelete(req.params.id);
-    res.json({ mensaje: 'Políticas eliminadas exitosamente' });
+    res.json({ mensaje: 'Política eliminada exitosamente' });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al eliminar las políticas', error });
+    res.status(500).json({ mensaje: 'Error al eliminar la política', error });
   }
 });
 
