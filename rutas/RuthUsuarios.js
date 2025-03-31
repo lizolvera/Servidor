@@ -2,8 +2,14 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../Models/ModelUsuario');
+const { solicitarRestablecimiento, restablecerContrasena} = require("../controllers/userController");
 
 const router = express.Router();
+
+//oscarnodemailer
+router.post("/solicitar-restablecimiento", solicitarRestablecimiento);
+router.post("/restablecer-contrasena", restablecerContrasena);
+//oscarnodemailer
 
 // Recuperación de contraseña
 router.post('/recuperar-contraseña', async (req, res) => {
@@ -161,7 +167,9 @@ router.post('/registro', async (req, res) => {
             sexo,
             edad,
             pregunta_recuperacion: { pre_id: 1, respuesta: respuesta_recuperacion },
-            rol: "Cliente"
+            rol: "Cliente",
+            resetToken: "", // Inicializa con un valor vacío
+            resetTokenExpiracion: null // Inicializa con null
         });
 
         await nuevoUsuario.save();

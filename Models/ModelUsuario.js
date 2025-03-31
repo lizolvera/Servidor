@@ -13,7 +13,9 @@ const UsuarioSchema = new mongoose.Schema({
     pre_id: { type: Number, required: true },
     respuesta: { type: String, required: true }
   },
-  rol: { type: String, enum: ['Cliente', 'Admin'], default: 'Cliente' }
+  rol: { type: String, enum: ['Cliente', 'Admin'], default: 'Cliente' },
+  resetToken: { type: String }, // Campo para almacenar el token de restablecimiento
+  resetTokenExpiracion: { type: Date } // Campo para almacenar la fecha de expiración del token
 }, { timestamps: true });
 
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
