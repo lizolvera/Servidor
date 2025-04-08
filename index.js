@@ -36,6 +36,7 @@ const misionVisionRoutes = require('./rutas/RuthMisionVision');
 const historialAntecedentesRoutes = require('./rutas/RuthHistorialAntecedentes');
 const preguntasRoutes = require('./rutas/RuthPreguntas');
 const ubicacionRoutes = require('./rutas/RuthUbicaciones');
+const dispositivoRoutes = require('./rutas/RuthDispositivo'); // Importar rutas de dispositivos
 
 // Ruta de prueba
 app.get('/', (req, res) => {
@@ -50,6 +51,7 @@ app.use('/mision-vision', misionVisionRoutes);
 app.use('/historial-antecedentes', historialAntecedentesRoutes);
 app.use('/preguntas', preguntasRoutes);
 app.use('/ubicaciones', ubicacionRoutes);
+app.use('/dispositivos', dispositivoRoutes); // Usar rutas de dispositivos
 
 // Definir puerto
 const PORT = process.env.PORT || 5000;
